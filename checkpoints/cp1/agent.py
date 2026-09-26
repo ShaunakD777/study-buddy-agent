@@ -26,7 +26,8 @@ history = [{"role": "system", "content": SYSTEM_PROMPT}]
 
 def chat(user_message):
     # 1. Perceive: add the student's message to the history.
-    # CHECKPOINT 1a: ADD the message to the history made at the top - don't start a new list.
+    # CHECKPOINT 1a: ADD the message to the history made at the top of the file,
+    # instead of starting a new list each time (a new list = Study Buddy forgets everything).
     # Hint: history.append(...) with a dict like {"role": "user", "content": user_message}
     history.append({"role": "user", "content": user_message})
 

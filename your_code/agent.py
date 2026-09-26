@@ -26,9 +26,10 @@ history = [{"role": "system", "content": SYSTEM_PROMPT}]
 
 def chat(user_message):
     # 1. Perceive: add the student's message to the history.
-    # CHECKPOINT 1a: ADD the message to the history made at the top - don't start a new list.
+    # CHECKPOINT 1a: ADD the message to the history made at the top of the file,
+    # instead of starting a new list each time (a new list = Study Buddy forgets everything).
     # Hint: history.append(...) with a dict like {"role": "user", "content": user_message}
-    history.append({"role": "user", "content": user_message})
+    history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": user_message}]
 
     for step in range(MAX_STEPS):
         # 2. Reason: send the whole history and the tools to the LLM.
@@ -36,7 +37,7 @@ def chat(user_message):
 
         # CHECKPOINT 1b: add the LLM's reply to the history, so it remembers its own answers.
         # Hint: the reply is already a dict, so just append it.
-        history.append(reply)
+
 
         # Did the LLM ask for a tool?
         if "tool_calls" in reply:
@@ -45,13 +46,7 @@ def chat(user_message):
             # log it, run it with run_tool(...), and append the result to the history.
             # Hint: a tool call looks like {"id": ..., "function": {"name": ..., "arguments": ...}}
             # and the result goes in as {"role": "tool", "tool_call_id": ..., "content": result}
-            for tool_call in reply["tool_calls"]:
-                tool_name = tool_call["function"]["name"]
-                tool_input = tool_call["function"]["arguments"]
-                log_tool_call(tool_name, tool_input)
-                result = run_tool(tool_name, tool_input)
-                history.append({"role": "tool", "tool_call_id": tool_call["id"], "content": result})
-            # Now go round the loop again, so the LLM can read the results.
+            return "I wanted to use a tool, but my tool code isn't written yet. Finish Checkpoint 2 in agent.py, then restart."
         else:
             # No tool needed: this is the final answer.
             return reply["content"]
