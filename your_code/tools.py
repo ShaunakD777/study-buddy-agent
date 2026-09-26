@@ -138,14 +138,14 @@ WEB_SEARCH = {
         "name": "web_search",
         # CHECKPOINT 2: say what this tool does and WHEN the agent should use it.
         # Hint: copy the style of WIKIPEDIA_SEARCH above. Mention recent news and current events.
-        "description": "",
+        "description": "Searches the web and returns the top 3 results with titles, snippets and links. Use it for recent news, current events, or any fact you are not sure about.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
                     # CHECKPOINT 2: describe the one input it needs: the search words.
-                    "description": "",
+                    "description": "The search words, for example 'quantum computing news'.",
                 },
             },
             "required": ["query"],
@@ -158,19 +158,19 @@ SAVE_NOTE = {
     "function": {
         "name": "save_note",
         # CHECKPOINT 3: say what this tool does and WHEN to use it (right after explaining a topic).
-        "description": "",
+        "description": "Saves a short note about a topic the student just learned, with today's date. Use it right after you finish explaining a topic.",
         "parameters": {
             "type": "object",
             "properties": {
                 "topic": {
                     "type": "string",
                     # CHECKPOINT 3: describe this input: the topic's name.
-                    "description": "",
+                    "description": "The name of the topic, for example 'Photosynthesis'.",
                 },
                 "summary": {
                     "type": "string",
                     # CHECKPOINT 3: describe this input: a SHORT summary (how many lines?).
-                    "description": "",
+                    "description": "A summary of the topic in exactly 3 short lines, one point per line.",
                 },
             },
             "required": ["topic", "summary"],
@@ -183,7 +183,7 @@ READ_NOTES = {
     "function": {
         "name": "read_notes",
         # CHECKPOINT 3: say what this tool does and WHEN to use it. It needs no inputs.
-        "description": "",
+        "description": "Reads all the notes saved so far, with their dates. Use it when the student asks what they have studied, or before quizzing them.",
         "parameters": {
             "type": "object",
             "properties": {},
