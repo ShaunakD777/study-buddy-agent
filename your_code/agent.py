@@ -29,7 +29,7 @@ def chat(user_message):
     # CHECKPOINT 1a: ADD the message to the history made at the top of the file,
     # instead of starting a new list each time (a new list = Study Buddy forgets everything).
     # Hint: history.append(...) with a dict like {"role": "user", "content": user_message}
-    history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": user_message}]  # <- makes a NEW list every time. Replace this whole line.
+    history.append({"role": "user", "content": user_message})
 
     for step in range(MAX_STEPS):
         # 2. Reason: send the whole history and the tools to the LLM.
@@ -37,7 +37,7 @@ def chat(user_message):
 
         # CHECKPOINT 1b: add the LLM's reply to the history, so it remembers its own answers.
         # Hint: the reply is already a dict, so just append it.
-
+        history.append(reply)
 
         # Did the LLM ask for a tool?
         if "tool_calls" in reply:
