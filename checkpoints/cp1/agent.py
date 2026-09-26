@@ -45,13 +45,7 @@ def chat(user_message):
             # log it, run it with run_tool(...), and append the result to the history.
             # Hint: a tool call looks like {"id": ..., "function": {"name": ..., "arguments": ...}}
             # and the result goes in as {"role": "tool", "tool_call_id": ..., "content": result}
-            for tool_call in reply["tool_calls"]:
-                tool_name = tool_call["function"]["name"]
-                tool_input = tool_call["function"]["arguments"]
-                log_tool_call(tool_name, tool_input)
-                result = run_tool(tool_name, tool_input)
-                history.append({"role": "tool", "tool_call_id": tool_call["id"], "content": result})
-            # Now go round the loop again, so the LLM can read the results.
+            return "I wanted to use a tool, but my tool code isn't written yet. Finish Checkpoint 2 in agent.py, then restart."
         else:
             # No tool needed: this is the final answer.
             return reply["content"]

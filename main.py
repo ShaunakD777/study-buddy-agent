@@ -96,7 +96,13 @@ while True:
     try:
         with thinking_spinner():
             answer = chat(user_message)
-        print_answer(answer)
+        if answer.strip():
+            print_answer(answer)
+        else:
+            log_error(
+                "Study Buddy gave an empty answer. It probably wanted a tool it doesn't have yet.",
+                "That gets fixed in Checkpoint 2. For now, try asking in a different way.",
+            )
     except FriendlyError as error:
         log_error(error.problem, error.fix)
     except KeyboardInterrupt:

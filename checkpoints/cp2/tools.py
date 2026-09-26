@@ -158,19 +158,19 @@ SAVE_NOTE = {
     "function": {
         "name": "save_note",
         # CHECKPOINT 3: say what this tool does and WHEN to use it (right after explaining a topic).
-        "description": "Saves a short note about a topic the student just learned, with today's date. Use it right after you finish explaining a topic.",
+        "description": "",
         "parameters": {
             "type": "object",
             "properties": {
                 "topic": {
                     "type": "string",
                     # CHECKPOINT 3: describe this input: the topic's name.
-                    "description": "The name of the topic, for example 'Photosynthesis'.",
+                    "description": "",
                 },
                 "summary": {
                     "type": "string",
                     # CHECKPOINT 3: describe this input: a SHORT summary (how many lines?).
-                    "description": "A summary of the topic in exactly 3 short lines, one point per line.",
+                    "description": "",
                 },
             },
             "required": ["topic", "summary"],
@@ -183,7 +183,7 @@ READ_NOTES = {
     "function": {
         "name": "read_notes",
         # CHECKPOINT 3: say what this tool does and WHEN to use it. It needs no inputs.
-        "description": "Reads all the notes saved so far, with their dates. Use it when the student asks what they have studied, or before quizzing them.",
+        "description": "",
         "parameters": {
             "type": "object",
             "properties": {},
