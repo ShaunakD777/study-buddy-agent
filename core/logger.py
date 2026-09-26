@@ -23,10 +23,20 @@ console = Console()
 # Thoughts can be long, so we only show the start of them.
 MAX_THOUGHT_LENGTH = 200
 
+# Other screens (like the web page in stretch/) can put a function in this list.
+# Every thinking / tool / error line is then passed to it as well as printed here.
+listeners = []
+
 
 def one_line(text):
     # Squash newlines and extra spaces into a single line.
     return " ".join(str(text).split())
+
+
+def show_line(text, style):
+    console.print(Text(text, style=style))
+    for listener in listeners:
+        listener(text.strip())
 
 
 def show_welcome():
@@ -58,7 +68,7 @@ def log_thought(text):
     text = one_line(text)
     if len(text) > MAX_THOUGHT_LENGTH:
         text = text[:MAX_THOUGHT_LENGTH] + "..."
-    console.print(Text("  💭 thinking: " + text, style="dim italic"))
+    show_line("  💭 thinking: " + text, "dim italic")
 
 
 def log_tool_call(tool_name, tool_input):
@@ -72,14 +82,14 @@ def log_tool_call(tool_name, tool_input):
 
     # "web_search" is printed as "web search"
     readable_name = tool_name.replace("_", " ")
-    console.print(Text("  🔧 calling " + readable_name + ": " + one_line(shown_input), style="bold yellow"))
+    show_line("  🔧 calling " + readable_name + ": " + one_line(shown_input), "bold yellow")
 
 
 def log_tool_result(result):
     preview = one_line(result)
     if len(preview) > 80:
         preview = preview[:80] + "..."
-    console.print(Text("  ↳ got result: " + preview, style="green"))
+    show_line("  ↳ got result: " + preview, "green")
 
 
 def log_error(problem, fix=""):
@@ -87,6 +97,8 @@ def log_error(problem, fix=""):
     if fix:
         message += "\n[bold]Fix:[/] " + fix
     console.print(Panel(message, title="Something went wrong", border_style="red"))
+    for listener in listeners:
+        listener("⚠️ Problem: " + problem + " Fix: " + fix)
 
 
 def print_answer(text):

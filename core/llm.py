@@ -9,6 +9,7 @@ You don't need to change this file.
 
 import os
 import re
+from datetime import date
 from pathlib import Path
 
 import groq
@@ -63,10 +64,14 @@ def ask_llm(history, tools):
     if not tools:
         tools = None
 
+    # The model doesn't know today's date, so we tell it on every request.
+    # (Needed for questions like "what's new this week?")
+    today = {"role": "system", "content": "Today's date is " + date.today().strftime("%d %B %Y") + "."}
+
     try:
         response = client.chat.completions.create(
             model=MODEL,
-            messages=history,
+            messages=[today] + history,
             tools=tools,
             reasoning_effort="low",
         )
