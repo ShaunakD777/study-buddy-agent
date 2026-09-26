@@ -4,7 +4,6 @@
 
 It's plain Python with no agent framework, so you can see every step of the agent loop: **perceive → reason → act → observe**.
 
-<!-- TODO (presenter): record a 20-second GIF of Study Buddy working and save it as docs/images/demo.gif -->
 ![Study Buddy searching the web](docs/images/web_search.svg)
 
 > ### 🆘 Stuck or behind? One command catches you up:
@@ -35,7 +34,6 @@ You need: a laptop, a free [GitHub](https://github.com) account, and **VS Code**
 ### Step 1. Install Python 3.10 or newer
 
 - **Windows:** download it from [python.org/downloads](https://www.python.org/downloads/). In the installer, **tick "Add python.exe to PATH"** at the bottom of the first screen, then click Install Now.
-  <!-- TODO (presenter): screenshot of the installer with the PATH box ticked -> docs/images/python_path.png -->
 - **Mac:** download it from [python.org/downloads](https://www.python.org/downloads/) and run the installer.
 
 Check it worked. Open a **new** terminal and type:
@@ -95,8 +93,6 @@ pip install -r requirements.txt
 
 - **Groq** (the AI model): sign up at [console.groq.com](https://console.groq.com), open **API Keys**, click **Create API Key**, and copy it. It starts with `gsk_`.
 - **Tavily** (web search): sign up at [app.tavily.com](https://app.tavily.com) and copy the API key on your dashboard. It starts with `tvly-`.
-
-<!-- TODO (presenter): screenshots of where the key is on each site -> docs/images/groq_key.png, docs/images/tavily_key.png -->
 
 Keys are like passwords: **never share them or post them online.**
 
