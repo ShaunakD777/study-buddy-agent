@@ -105,51 +105,96 @@ def read_notes():
 
 # =====================================================================
 # Part 2. The tool descriptions (this is what the LLM reads)
-# Each one has: a name, what it does + when to use it, and its inputs.
 # =====================================================================
+
+# This is the standard "function calling" format that Groq (and OpenAI) use:
+#   "name"        - the tool's name, matching a function in TOOL_FUNCTIONS below
+#   "description" - what the tool does and WHEN to use it
+#   "parameters"  - the inputs it needs, each with a type and a description
+#   "required"    - which of those inputs must always be given
 
 # Worked example - copy this shape for the others.
 WIKIPEDIA_SEARCH = {
-    "name": "wikipedia_search",
-    "description": (
-        "Looks up a topic on Wikipedia and returns a short summary and a link. "
-        "Use it for well-known, settled topics such as concepts, people, places or history."
-    ),
-    "inputs": {
-        "query": "The topic to look up, for example 'photosynthesis'.",
+    "type": "function",
+    "function": {
+        "name": "wikipedia_search",
+        "description": (
+            "Looks up a topic on Wikipedia and returns a short summary and a link. "
+            "Use it for well-known, settled topics such as concepts, people, places or history."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The topic to look up, for example 'photosynthesis'.",
+                },
+            },
+            "required": ["query"],
+        },
     },
 }
 
 WEB_SEARCH = {
-    "name": "web_search",
-    "description": (
-        "Searches the web and returns the top 3 results with titles, snippets and links. "
-        "Use it for recent news, current events, or any fact you are not sure about."
-    ),
-    "inputs": {
-        "query": "The search words, for example 'quantum computing news'.",
+    "type": "function",
+    "function": {
+        "name": "web_search",
+        "description": (
+            "Searches the web and returns the top 3 results with titles, snippets and links. "
+            "Use it for recent news, current events, or any fact you are not sure about."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The search words, for example 'quantum computing news'.",
+                },
+            },
+            "required": ["query"],
+        },
     },
 }
 
 SAVE_NOTE = {
-    "name": "save_note",
-    "description": (
-        "Saves a short note about a topic the student just learned, with today's date. "
-        "Use it right after you finish explaining a topic."
-    ),
-    "inputs": {
-        "topic": "The name of the topic, for example 'Photosynthesis'.",
-        "summary": "A summary of the topic in exactly 3 short lines.",
+    "type": "function",
+    "function": {
+        "name": "save_note",
+        "description": (
+            "Saves a short note about a topic the student just learned, with today's date. "
+            "Use it right after you finish explaining a topic."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "topic": {
+                    "type": "string",
+                    "description": "The name of the topic, for example 'Photosynthesis'.",
+                },
+                "summary": {
+                    "type": "string",
+                    "description": "A summary of the topic in exactly 3 short lines, one point per line.",
+                },
+            },
+            "required": ["topic", "summary"],
+        },
     },
 }
 
 READ_NOTES = {
-    "name": "read_notes",
-    "description": (
-        "Reads all the notes saved so far, with their dates. "
-        "Use it when the student asks what they have studied, or before quizzing them."
-    ),
-    "inputs": {},
+    "type": "function",
+    "function": {
+        "name": "read_notes",
+        "description": (
+            "Reads all the notes saved so far, with their dates. "
+            "Use it when the student asks what they have studied, or before quizzing them."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+        },
+    },
 }
 
 # The tools the agent is allowed to use.
@@ -170,33 +215,13 @@ TOOL_FUNCTIONS = {
 }
 
 
-def to_groq_format(tool):
-    """Turn one of our simple descriptions into the exact format Groq expects."""
-    properties = {}
-    for input_name, input_description in tool["inputs"].items():
-        properties[input_name] = {"type": "string", "description": input_description}
-
-    return {
-        "type": "function",
-        "function": {
-            "name": tool["name"],
-            "description": tool["description"],
-            "parameters": {
-                "type": "object",
-                "properties": properties,
-                "required": list(tool["inputs"]),
-            },
-        },
-    }
-
-
 def get_tools_for_llm():
-    """All the tools in TOOLS that have a description, in Groq's format."""
+    """All the tools in TOOLS that have a description written."""
     ready = []
     for tool in TOOLS:
         # A tool with an empty description is skipped until you write one.
-        if tool["description"].strip():
-            ready.append(to_groq_format(tool))
+        if tool["function"]["description"].strip():
+            ready.append(tool)
     return ready
 
 

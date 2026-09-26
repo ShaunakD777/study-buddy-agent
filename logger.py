@@ -36,6 +36,7 @@ def log_tool_call(tool_name, tool_input):
         shown_input = ", ".join(str(value) for value in values)
     except (ValueError, AttributeError):
         shown_input = str(tool_input)
+    shown_input = " ".join(shown_input.split())  # keep it on one line
 
     # "web_search" is printed as "web search"
     readable_name = tool_name.replace("_", " ")
