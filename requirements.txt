@@ -1,0 +1,5 @@
+groq
+tavily-python
+wikipedia
+python-dotenv
+colorama

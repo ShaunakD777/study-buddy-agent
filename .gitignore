@@ -1,0 +1,12 @@
+# Your API keys - never upload these
+.env
+
+# Your saved study notes and your saved attempts
+notes/
+my_attempts/
+
+# Python's cache files
+__pycache__/
+*.pyc
+.venv/
+venv/
