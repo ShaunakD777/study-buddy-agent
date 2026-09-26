@@ -138,14 +138,14 @@ WEB_SEARCH = {
         "name": "web_search",
         # CHECKPOINT 2: say what this tool does and WHEN the agent should use it.
         # Hint: copy the style of WIKIPEDIA_SEARCH above. Mention recent news and current events.
-        "description": "",
+        "description": "Searches the web and returns the top 3 results with titles, snippets and links. Use it for recent news, current events, or any fact you are not sure about.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
                     # CHECKPOINT 2: describe the one input it needs: the search words.
-                    "description": "",
+                    "description": "The search words, for example 'quantum computing news'.",
                 },
             },
             "required": ["query"],
