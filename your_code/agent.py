@@ -13,8 +13,8 @@ Every message goes round the same loop from the lecture:
 
 from core.llm import ask_llm
 from core.logger import log_tool_call
-from prompts import SYSTEM_PROMPT
-from tools import get_tools_for_llm, run_tool
+from your_code.prompts import SYSTEM_PROMPT
+from your_code.tools import get_tools_for_llm, run_tool
 
 # Safety limit: at most 5 trips round the loop for each message.
 MAX_STEPS = 5

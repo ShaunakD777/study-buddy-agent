@@ -26,8 +26,8 @@ warnings.filterwarnings("ignore", module="wikipedia")
 # Wikipedia refuses requests from programs that don't say who they are.
 wikipedia.set_user_agent("StudyBuddy/1.0 (student project; https://github.com/ShaunakD777/study-buddy-agent)")
 
-# Your notes live in notes/study_notes.txt, next to this file.
-NOTES_FILE = Path(__file__).parent / "notes" / "study_notes.txt"
+# Your notes live in notes/study_notes.txt, in the main study-buddy folder.
+NOTES_FILE = Path(__file__).parent.parent / "notes" / "study_notes.txt"
 
 
 # =====================================================================

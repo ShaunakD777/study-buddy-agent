@@ -9,6 +9,9 @@ import sys
 import traceback
 from pathlib import Path
 
+# Stop Python making __pycache__ folders, so your_code/ only ever shows your 3 files.
+sys.dont_write_bytecode = True
+
 STUDENT_FILES = ["prompts.py", "tools.py", "agent.py"]
 CATCH_UP_TIP = "Stuck? Run  python catch_up.py N  (N = the checkpoint you want to jump to)."
 
@@ -19,7 +22,7 @@ def describe_crash(error):
     where = ""
     for frame in traceback.extract_tb(error.__traceback__):
         if Path(frame.filename).name in STUDENT_FILES:
-            where = Path(frame.filename).name + ", line " + str(frame.lineno)
+            where = "your_code/" + Path(frame.filename).name + ", line " + str(frame.lineno)
 
     problem = type(error).__name__ + ": " + str(error)
     fix = CATCH_UP_TIP
@@ -36,7 +39,7 @@ if sys.version_info < (3, 10):
     sys.exit(1)
 
 try:
-    from agent import chat
+    from your_code.agent import chat
     from core.llm import FriendlyError, get_key
     from core.logger import ask_user, log_error, print_answer, print_goodbye, show_welcome, thinking_spinner
 except ModuleNotFoundError as error:
@@ -49,7 +52,7 @@ except ModuleNotFoundError as error:
     sys.exit(1)
 except SyntaxError as error:
     # A typo in a student file, such as a missing bracket or quote.
-    print("\nProblem: there's a typo in " + Path(error.filename).name + ", line " + str(error.lineno) + ".")
+    print("\nProblem: there's a typo in your_code/" + Path(error.filename).name + ", line " + str(error.lineno) + ".")
     print("Python says: " + str(error.msg))
     print("Fix: look for a missing bracket, quote, comma or colon on or just before that line.")
     print(CATCH_UP_TIP + "\n")
