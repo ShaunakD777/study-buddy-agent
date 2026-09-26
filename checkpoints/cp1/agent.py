@@ -47,6 +47,7 @@ def chat(user_message):
             # Hint: a tool call looks like {"id": ..., "function": {"name": ..., "arguments": ...}}
             # and the result goes in as {"role": "tool", "tool_call_id": ..., "content": result}
             return "I wanted to use a tool, but my tool code isn't written yet. Finish Checkpoint 2 in agent.py, then restart."
+            # Now go round the loop again, so the LLM can read the results.
         else:
             # No tool needed: this is the final answer.
             return reply["content"]
