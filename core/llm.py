@@ -8,12 +8,13 @@ You don't need to change this file.
 """
 
 import os
+import re
 from pathlib import Path
 
 import groq
 from dotenv import load_dotenv
 
-from logger import log_thought
+from core.logger import log_thought
 
 # The model we use. If Groq retires it, change this one line.
 MODEL = "openai/gpt-oss-120b"
@@ -21,8 +22,8 @@ MODEL = "openai/gpt-oss-120b"
 # Hit a rate limit? Change MODEL above to this smaller model instead.
 BACKUP_MODEL = "openai/gpt-oss-20b"
 
-# The .env file sits in the same folder as this file.
-ENV_FILE = Path(__file__).parent / ".env"
+# The .env file sits in the main study-buddy folder, one level up from core/.
+ENV_FILE = Path(__file__).parent.parent / ".env"
 
 
 class FriendlyError(Exception):
@@ -101,8 +102,11 @@ def ask_llm(history, tools):
     # Show the model's thinking in grey, so we can see WHY it does things.
     log_thought(message.reasoning)
 
+    # gpt-oss sometimes adds its own citation marks like 【0†L1-L4】. They mean nothing to us, so remove them.
+    content = re.sub(r"【[^】]*】", "", message.content or "")
+
     # Turn the reply into a plain dict, the same shape as the other messages in the history.
-    reply = {"role": "assistant", "content": message.content or ""}
+    reply = {"role": "assistant", "content": content}
 
     if message.tool_calls:
         reply["tool_calls"] = []

@@ -11,8 +11,8 @@ Every message goes round the same loop from the lecture:
     When the LLM answers without asking for a tool, that answer is final.
 """
 
-from llm import ask_llm
-from logger import log_tool_call
+from core.llm import ask_llm
+from core.logger import log_tool_call
 from prompts import SYSTEM_PROMPT
 from tools import get_tools_for_llm, run_tool
 

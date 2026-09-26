@@ -16,7 +16,8 @@ try:
     import groq
     from tavily import TavilyClient
 
-    from llm import MODEL, FriendlyError, get_key
+    from core.llm import MODEL, FriendlyError, get_key
+    from core.logger import console
 except ModuleNotFoundError as error:
     print("Problem: the library '" + str(error.name) + "' isn't installed.")
     print("Fix: run  pip install -r requirements.txt  and try again.")
@@ -59,14 +60,14 @@ all_ok = True
 for name, check in [("Groq", check_groq), ("Tavily", check_tavily)]:
     try:
         check()
-        print(name + ": connected.")
+        console.print("[green]✓[/] " + name + ": connected.")
     except FriendlyError as error:
         all_ok = False
-        print(name + ": NOT connected.")
-        print("   Problem: " + error.problem)
-        print("   Fix: " + error.fix)
+        console.print("[red]✗[/] " + name + ": NOT connected.")
+        console.print("   [bold]Problem:[/] " + error.problem)
+        console.print("   [bold]Fix:[/] " + error.fix)
 
 if all_ok:
-    print("You're ready!")
+    console.print("[bold green]You're ready![/]")
 else:
-    print("\nFix the problem above, then run  python hello_test.py  again.")
+    console.print("\nFix the problem above, then run  [bold]python hello_test.py[/]  again.")

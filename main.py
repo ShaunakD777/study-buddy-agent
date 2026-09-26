@@ -1,7 +1,7 @@
 """
 main.py - the chat window. Run it with:  python main.py
 
-It reads what you type, hands it to the agent, and prints the answer.
+It reads what you type, hands it to the agent, and shows the answer.
 It also turns crashes into plain-English messages. You don't need to change this file.
 """
 
@@ -13,18 +13,19 @@ STUDENT_FILES = ["prompts.py", "tools.py", "agent.py"]
 CATCH_UP_TIP = "Stuck? Run  python catch_up.py N  (N = the checkpoint you want to jump to)."
 
 
-def explain_crash(error):
-    """Print which student file and line caused a crash, in plain English."""
+def describe_crash(error):
+    """Turn a crash into a plain-English problem and fix, naming the student file and line."""
     # Find the last line of the crash that was inside one of the student files.
     where = ""
     for frame in traceback.extract_tb(error.__traceback__):
         if Path(frame.filename).name in STUDENT_FILES:
             where = Path(frame.filename).name + ", line " + str(frame.lineno)
 
-    print("\n  Problem: " + type(error).__name__ + ": " + str(error))
+    problem = type(error).__name__ + ": " + str(error)
+    fix = CATCH_UP_TIP
     if where:
-        print("  It happened in " + where + ". Check that line for a typo.")
-    print("  " + CATCH_UP_TIP + "\n")
+        fix = "It happened in " + where + ". Check that line for a typo. " + CATCH_UP_TIP
+    return problem, fix
 
 
 # ---- Step 1: check Python and load the program ----
@@ -36,24 +37,26 @@ if sys.version_info < (3, 10):
 
 try:
     from agent import chat
-    from llm import FriendlyError, get_key
-    from logger import log_error, print_answer
+    from core.llm import FriendlyError, get_key
+    from core.logger import ask_user, log_error, print_answer, print_goodbye, show_welcome, thinking_spinner
 except ModuleNotFoundError as error:
-    if error.name in ["groq", "tavily", "wikipedia", "dotenv", "colorama"]:
-        print("\n  Problem: the library '" + error.name + "' isn't installed.")
-        print("  Fix: run  pip install -r requirements.txt  and try again.\n")
+    if error.name in ["groq", "tavily", "wikipedia", "dotenv", "rich"]:
+        print("\nProblem: the library '" + error.name + "' isn't installed.")
+        print("Fix: run  pip install -r requirements.txt  and try again.\n")
     else:
-        explain_crash(error)
+        problem, fix = describe_crash(error)
+        print("\nProblem: " + problem + "\nFix: " + fix + "\n")
     sys.exit(1)
 except SyntaxError as error:
     # A typo in a student file, such as a missing bracket or quote.
-    print("\n  Problem: there's a typo in " + Path(error.filename).name + ", line " + str(error.lineno) + ".")
-    print("  Python says: " + str(error.msg))
-    print("  Look for a missing bracket, quote, comma or colon on or just before that line.")
-    print("  " + CATCH_UP_TIP + "\n")
+    print("\nProblem: there's a typo in " + Path(error.filename).name + ", line " + str(error.lineno) + ".")
+    print("Python says: " + str(error.msg))
+    print("Fix: look for a missing bracket, quote, comma or colon on or just before that line.")
+    print(CATCH_UP_TIP + "\n")
     sys.exit(1)
 except Exception as error:
-    explain_crash(error)
+    problem, fix = describe_crash(error)
+    print("\nProblem: " + problem + "\nFix: " + fix + "\n")
     sys.exit(1)
 
 
@@ -74,12 +77,11 @@ except FriendlyError as error:
 
 # ---- Step 3: the chat ----
 
-print("\nStudy Buddy is ready! Ask me about any topic.")
-print("Type 'quit' to leave.\n")
+show_welcome()
 
 while True:
     try:
-        user_message = input("You: ").strip()
+        user_message = ask_user().strip()
     except (KeyboardInterrupt, EOFError):
         break
 
@@ -89,13 +91,15 @@ while True:
         break
 
     try:
-        answer = chat(user_message)
+        with thinking_spinner():
+            answer = chat(user_message)
         print_answer(answer)
     except FriendlyError as error:
         log_error(error.problem, error.fix)
     except KeyboardInterrupt:
-        print("\n  (stopped)\n")
+        log_error("You stopped that answer.", "Just ask again.")
     except Exception as error:
-        explain_crash(error)
+        problem, fix = describe_crash(error)
+        log_error(problem, fix)
 
-print("\nBye! Happy studying.")
+print_goodbye()

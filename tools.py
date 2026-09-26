@@ -18,8 +18,8 @@ from pathlib import Path
 import wikipedia
 from tavily import TavilyClient
 
-from llm import FriendlyError, get_key
-from logger import log_error
+from core.llm import FriendlyError, get_key
+from core.logger import log_error, log_tool_result
 
 # The wikipedia library prints a harmless warning we don't want to see.
 warnings.filterwarnings("ignore", module="wikipedia")
@@ -237,9 +237,12 @@ def run_tool(tool_name, tool_input):
         return "The tool inputs were not valid JSON. Please try again."
 
     try:
-        return TOOL_FUNCTIONS[tool_name](**inputs)
+        result = TOOL_FUNCTIONS[tool_name](**inputs)
     except FriendlyError as error:
         log_error(error.problem, error.fix)
-        return "The tool failed: " + error.problem
+        result = "The tool failed: " + error.problem
     except TypeError:
-        return "Wrong inputs for " + tool_name + ". Check its description and try again."
+        result = "Wrong inputs for " + tool_name + ". Check its description and try again."
+
+    log_tool_result(result)
+    return result
