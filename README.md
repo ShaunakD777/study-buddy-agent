@@ -27,113 +27,15 @@ It's plain Python with no agent framework, so you can see every step of the agen
 
 ## Setup (do this at home, before the session)
 
-It takes about 20 minutes. At the end, the hello test must say **You're ready!**
+It takes about 30–40 minutes, even on a laptop that has never been used for coding. At the end, the hello test must say **You're ready!**
 
-You need: a laptop, a free [GitHub](https://github.com) account, and **VS Code** ([download](https://code.visualstudio.com)).
+👉 **Follow the step-by-step guide in [SETUP.md](SETUP.md).** It covers installing Python and VS Code, downloading this project (ZIP or `git clone`), getting your two free API keys, and running the hello test.
 
-### Step 1. Install Python 3.10 or newer
+Once you're set up, every time you come back:
 
-- **Windows:** download it from [python.org/downloads](https://www.python.org/downloads/). In the installer, **tick "Add python.exe to PATH"** at the bottom of the first screen, then click Install Now.
-- **Mac:** download it from [python.org/downloads](https://www.python.org/downloads/) and run the installer.
-
-Check it worked. Open a **new** terminal and type:
-
-| Windows | Mac |
-| --- | --- |
-| `python --version` | `python3 --version` |
-
-You should see `Python 3.10` or higher (3.11, 3.12...).
-
-### Step 2. Install Git
-
-- **Windows:** download it from [git-scm.com](https://git-scm.com/download/win) and click Next through the installer.
-- **Mac:** type `git --version` in the terminal. If it isn't installed, your Mac offers to install it. Say yes.
-
-### Step 3. Get your own copy of this project
-
-1. At the top of this page on GitHub, click the green **Use this template** button, then **Create a new repository**.
-2. Name it `study-buddy`, choose **Public**, and click **Create repository**.
-3. On your new repository's page, click the green **Code** button and copy the link.
-4. In a terminal, go to the folder where you keep your projects and type (paste your own link):
-
-   ```
-   git clone https://github.com/YOUR-USERNAME/study-buddy.git
-   cd study-buddy
-   ```
-
-5. Open the folder in VS Code: **File → Open Folder → study-buddy**.
-
-**From now on, always run commands from inside the `study-buddy` folder.** In VS Code, **Terminal → New Terminal** opens one in the right place.
-
-### Step 4. Create a virtual environment
-
-This keeps Study Buddy's libraries separate from anything else on your laptop.
-
-| | Windows | Mac |
-| --- | --- | --- |
-| Create it (once) | `python -m venv .venv` | `python3 -m venv .venv` |
-| Switch it on | `.venv\Scripts\activate` | `source .venv/bin/activate` |
-
-When it's on, you'll see **`(.venv)`** at the start of the terminal line.
-
-> **Switch it on again every time you open a new terminal.** No `(.venv)` means Study Buddy can't find its libraries.
->
-> Windows error *"running scripts is disabled on this system"*? Run this once, then try again:
-> `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
-
-(With the virtual environment on, `python` works on Mac too, so the rest of this guide just says `python`.)
-
-### Step 5. Install the libraries
-
-```
-pip install -r requirements.txt
-```
-
-### Step 6. Get your two free API keys
-
-- **Groq** (the AI model): sign up at [console.groq.com](https://console.groq.com), open **API Keys**, click **Create API Key**, and copy it. It starts with `gsk_`.
-- **Tavily** (web search): sign up at [app.tavily.com](https://app.tavily.com) and copy the API key on your dashboard. It starts with `tvly-`.
-
-Keys are like passwords: **never share them or post them online.**
-
-### Step 7. Put your keys in a `.env` file
-
-Make a copy of `.env.example` called `.env`:
-
-| Windows | Mac |
-| --- | --- |
-| `copy .env.example .env` | `cp .env.example .env` |
-
-Open `.env` in VS Code and paste each key straight after the `=` sign, with **no spaces and no quotes**:
-
-```
-GROQ_API_KEY=gsk_your_key_here
-TAVILY_API_KEY=tvly-your_key_here
-```
-
-Save the file. (`.env` is never uploaded to GitHub, so your keys stay private.)
-
-### Step 8. Run the hello test
-
-```
-python hello_test.py
-```
-
-You should see:
-
-```
-✓ Groq: connected.
-✓ Tavily: connected.
-You're ready!
-```
-
-If it says **NOT connected**, it tells you the problem and how to fix it. Still stuck? Send the organiser a screenshot of the whole terminal.
-
-### Step 9. Meet Study Buddy (optional)
-
-```
-python main.py
-```
+1. Open the project folder in VS Code, then **Terminal → New Terminal**.
+2. Switch on the virtual environment: `.venv\Scripts\activate` (Mac: `source .venv/bin/activate`).
+3. Start Study Buddy: `python main.py`
 
 Right now it's a plain chatbot: it doesn't know who it is, forgets what you said, and can't look anything up. **In the session, you'll turn it into an agent.** Type `quit` to leave.
 
@@ -232,14 +134,9 @@ flowchart TD
 
 Do this at the end of the session (and whenever you change something).
 
-**The first time only**, tell Git who you are (use your GitHub email):
+**The first time only**, create your own repository and connect the project to it: follow [SETUP.md, Phase G](SETUP.md#phase-g-save-your-work-to-github-later-optional).
 
-```
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
-
-Then, every time you want to save:
+After that, every time you want to save:
 
 ```
 git add .
@@ -247,7 +144,7 @@ git commit -m "Finished Study Buddy checkpoint 3"
 git push
 ```
 
-The first push opens a browser window asking you to sign in to GitHub. Your keys (`.env`) and notes are never uploaded - they're listed in `.gitignore`.
+Your keys (`.env`) and notes are never uploaded - they're listed in `.gitignore`.
 
 Prefer clicking? In VS Code, open the **Source Control** panel (the branch icon on the left), type a message, click **Commit**, then **Sync Changes**.
 

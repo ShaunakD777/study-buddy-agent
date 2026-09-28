@@ -5,7 +5,7 @@ For the 2-3 helpers walking the room. Most problems are in this table.
 
 ## First, check these three things
 
-1. **Right folder?** The terminal must be inside the `study-buddy` folder (`ls` or `dir` shows `main.py`).
+1. **Right folder?** The terminal must be inside the project folder, the one with `main.py` in it (`ls` or `dir` shows it).
 2. **Virtual environment on?** The terminal line starts with `(.venv)`. If not: `.venv\Scripts\activate` (Windows) or `source .venv/bin/activate` (Mac).
 3. **Files saved?** An unsaved file shows a dot on its tab in VS Code. Save with Ctrl+S / Cmd+S, then restart Study Buddy.
 
@@ -56,7 +56,7 @@ For the 2-3 helpers walking the room. Most problems are in this table.
 | --- | --- |
 | `'streamlit' is not recognized` | `pip install -r stretch/web_page/requirements.txt` (with the virtual environment on). |
 | Asks for an email in the terminal | Press Enter to skip. |
-| `No module named your_code` | Run `streamlit run stretch/web_page/app.py` from the main `study-buddy` folder. |
+| `No module named your_code` | Run `streamlit run stretch/web_page/app.py` from the main project folder (the one with `main.py`). |
 
 ## Anything else, and time is short
 
