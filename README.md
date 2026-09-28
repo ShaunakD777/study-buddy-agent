@@ -98,7 +98,7 @@ Your own attempt is saved in `my_attempts/before_cpN/`. Compare it with the work
 ## How the project is organised
 
 ```
-study-buddy/
+study-buddy-agent/
 ├── your_code/        ← the only folder you edit
 │   ├── prompts.py        the system prompt (the agent's instructions)
 │   ├── tools.py          the tools, and their descriptions for the LLM
@@ -106,9 +106,11 @@ study-buddy/
 ├── main.py           run this to chat with Study Buddy
 ├── hello_test.py     checks your setup
 ├── catch_up.py       jumps to the end of any checkpoint
+├── SETUP.md          step-by-step setup for a brand-new laptop
 ├── core/             pre-built parts (talking to Groq, drawing the screen)
 ├── checkpoints/      finished copies of your_code/ for each checkpoint
 ├── stretch/          the Checkpoint 4 options
+├── docs/             the helpers' cheat sheet and the README pictures
 ├── notes/            your saved study notes (created when you first save one)
 └── .env              your keys (you create this; never uploaded)
 ```
